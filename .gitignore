@@ -48,3 +48,4 @@ ProjectSettings/ProjectSettings.asset
 ProjectSettings/Physics2DSettings.asset
 ProjectSettings/NetworkManager.asset
 ProjectSettings/NavMeshAreas.asset
+.collabignore
