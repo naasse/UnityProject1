@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     private int jumpPowerCount;
     private int speedPowerCount;
 
+    public bool UpIsActuallyUpMovement = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
         count = 0;
         jumpPowerCount = 0;
         speedPowerCount = 1;
+        rb.freezeRotation = true;
     }
 
     private void FixedUpdate()
@@ -35,6 +38,7 @@ public class PlayerController : MonoBehaviour
             jumpNow = jumpPower;
         }
         Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), jumpNow, Input.GetAxis("Vertical"));
+        if(UpIsActuallyUpMovement)movement = Quaternion.Euler(0, 45, 0) * movement;
         rb.AddForce(speed * movement);
 
     }
