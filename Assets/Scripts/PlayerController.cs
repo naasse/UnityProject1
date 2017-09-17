@@ -1,57 +1,64 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class PlayerController : MonoBehaviour
 {
-    private float speed;
-    private float jumpPower;
-    public String jumpButton;
-
-    private bool isTouchingMap;
+    public float speed;
+    public int attackStrength;
     private Rigidbody rb;
-    private int count;
-    private int jumpPowerCount;
-    private int speedPowerCount;
-
-    public bool UpIsActuallyUpMovement = false;
+    public Image enemyHealth;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         speed = 10.0f;
-        jumpPower = 0.0f;
-        count = 0;
-        jumpPowerCount = 0;
-        speedPowerCount = 1;
         rb.freezeRotation = true;
+        attackStrength = 1;
     }
 
     private void FixedUpdate()
     {
-
-        float jumpNow = 0.0f;
-        //What if not 0 plane? Seems delayed, too - can't jump again for a few seconds after landing.
-        if (Input.GetKeyDown(jumpButton) && GetComponent<Rigidbody>().transform.position.y <= 0.55f)
-        {
-            jumpNow = jumpPower;
-        }
-        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), jumpNow, Input.GetAxis("Vertical"));
-        if(UpIsActuallyUpMovement)movement = Quaternion.Euler(0, 45, 0) * movement;
+        //Movement
+        Vector3 movement = Quaternion.Euler(0, 45, 0) * new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
         rb.AddForce(speed * movement);
 
-    }
+        //MouseListener
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("TAG NAME"))
+        if (Physics.Raycast(ray, out hit, 1000f))
         {
-            //LOGIC
-        }
-        else  if (other.gameObject.CompareTag("Enemy"))
-        {
-            //LOGIC
+            //If hovering on enemy
+            if (hit.collider.gameObject.tag == "Enemy")
+            {
+                //Show healthbar
+                enemyHealth.gameObject.SetActive(true);
+                EnemyController enemy = hit.collider.gameObject.GetComponent<EnemyController>();
+
+                //Click to Attack
+                if (Input.GetMouseButtonDown(0))
+                {
+                    enemy.TakeDamage(attackStrength);
+                }
+
+                //Get enemy remaining HP (0..1)
+                float enemyRemainingHP = enemy.GetPercentageHP();
+
+                //Load the fill percentage, hide if enemy defeated
+                //TODO - seems to be an issue with the prefab having an Image from saved Canvas. Can't seem to get healthBar to work on the prefab
+                enemyHealth.gameObject.transform.Find("Health").GetComponent<Image>().fillAmount = enemyRemainingHP;
+                if (enemyRemainingHP <= 0)
+                    enemyHealth.gameObject.SetActive(false);
+            }
+            else
+            {
+                //Hide healthbar if not hovering on an enemy
+                //TODO - may not be the best way to handle this - only fires on hovering on another game object
+                enemyHealth.gameObject.SetActive(false);
+            }
         }
     }
 }
