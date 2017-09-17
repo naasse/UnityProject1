@@ -1225,6 +1225,7 @@ GameObject:
   - component: {fileID: 975697234}
   - component: {fileID: 975697233}
   - component: {fileID: 975697232}
+  - component: {fileID: 975697235}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1277,6 +1278,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &975697235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975697231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ddeb0ec123f3a748ae4533df441e529, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyHealth: {fileID: 1064502199}
 --- !u!1 &984311123
 GameObject:
   m_ObjectHideFlags: 0
@@ -1617,7 +1630,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4656619801985248, guid: 47dc412361e7f4f44a053d124ee80d67, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 47dc412361e7f4f44a053d124ee80d67, type: 2}
@@ -3123,7 +3136,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4656619801985248, guid: 47dc412361e7f4f44a053d124ee80d67, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1516546905762136, guid: 47dc412361e7f4f44a053d124ee80d67, type: 2}
       propertyPath: m_Name
@@ -3322,7 +3335,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4656619801985248, guid: 47dc412361e7f4f44a053d124ee80d67, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1516546905762136, guid: 47dc412361e7f4f44a053d124ee80d67, type: 2}
       propertyPath: m_Name

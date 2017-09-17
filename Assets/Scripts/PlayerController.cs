@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public int attackStrength;
     private Rigidbody rb;
-    public Image enemyHealth;
 
     private void Start()
     {
@@ -31,33 +30,11 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 1000f))
         {
-            //If hovering on enemy
-            if (hit.collider.gameObject.tag == "Enemy")
+            //If hovering on enemy, click to attack
+            if (hit.collider.gameObject.tag == "Enemy" && Input.GetMouseButtonDown(0))
             {
-                //Show healthbar
-                enemyHealth.gameObject.SetActive(true);
                 EnemyController enemy = hit.collider.gameObject.GetComponent<EnemyController>();
-
-                //Click to Attack
-                if (Input.GetMouseButtonDown(0))
-                {
-                    enemy.TakeDamage(attackStrength);
-                }
-
-                //Get enemy remaining HP (0..1)
-                float enemyRemainingHP = enemy.GetPercentageHP();
-
-                //Load the fill percentage, hide if enemy defeated
-                //TODO - seems to be an issue with the prefab having an Image from saved Canvas. Can't seem to get healthBar to work on the prefab
-                enemyHealth.gameObject.transform.Find("Health").GetComponent<Image>().fillAmount = enemyRemainingHP;
-                if (enemyRemainingHP <= 0)
-                    enemyHealth.gameObject.SetActive(false);
-            }
-            else
-            {
-                //Hide healthbar if not hovering on an enemy
-                //TODO - may not be the best way to handle this - only fires on hovering on another game object
-                enemyHealth.gameObject.SetActive(false);
+                enemy.TakeDamage(attackStrength);
             }
         }
     }

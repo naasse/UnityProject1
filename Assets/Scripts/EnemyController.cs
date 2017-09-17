@@ -35,6 +35,6 @@ public class EnemyController : MonoBehaviour {
     }
     public float GetPercentageHP()
     {
-        return ((float)currentHP)/((float)maxHP);
+        return (float)currentHP/(float)maxHP;
     }
 }
