@@ -10,12 +10,24 @@ public class PlayerController : MonoBehaviour
     public int attackStrength;
     private Rigidbody rb;
 
+    private int maxHP;
+    private int currentHP;
+    public Text statusText;
+
     private void Start()
     {
+        maxHP = 20;
+        currentHP = 20;
         rb = GetComponent<Rigidbody>();
         speed = 10.0f;
         rb.freezeRotation = true;
         attackStrength = 1;
+        SetStatusText();
+    }
+
+    private void SetStatusText()
+    {
+        statusText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
     }
 
     private void FixedUpdate()
@@ -30,12 +42,43 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 1000f))
         {
+            GameController gameController = GameObject.Find("EventSystem").GetComponent<GameController>();
             //If hovering on enemy, click to attack
-            if (hit.collider.gameObject.tag == "Enemy" && Input.GetMouseButtonDown(0))
+            if (gameController.IsPlayerTurn()) 
             {
-                EnemyController enemy = hit.collider.gameObject.GetComponent<EnemyController>();
-                enemy.TakeDamage(attackStrength);
+                if (hit.collider.gameObject.tag == "Enemy" && Input.GetMouseButtonDown(0))
+                {
+                    EnemyController enemy = hit.collider.gameObject.GetComponent<EnemyController>();
+                    enemy.TakeDamage(attackStrength);
+                    gameController.UpdateEventLog("Player dealt " + attackStrength + " damage to " + enemy.name);
+                    gameController.SetPlayerTurn(false);
+                }
             }
         }
+    }
+    public void TakeDamage(int damageAmount)
+    {
+        currentHP -= damageAmount;
+        SetStatusText();
+        //Game over screen
+    }
+    public void Heal(int healAmount)
+    {
+        currentHP += healAmount;
+        if (currentHP > maxHP)
+            currentHP = maxHP;
+        SetStatusText();
+    }
+    public int GetMaxHP()
+    {
+        return maxHP;
+    }
+    public int GetCurrentHP()
+    {
+        return currentHP;
+    }
+    public float GetPercentageHP()
+    {
+        return (float)currentHP / (float)maxHP;
     }
 }

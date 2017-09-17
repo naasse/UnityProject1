@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour {
 
-    public int maxHP;
-    public int currentHP;
+    private int maxHP;
+    private int currentHP;
+    private int attackStrength;
 
     // Use this for initialization
-    void Start () {      
+    void Start ()
+    {
         maxHP = 10;
         currentHP = 10;
+        attackStrength = 1;
     }
 
     public void TakeDamage(int damageAmount)
@@ -36,5 +39,9 @@ public class EnemyController : MonoBehaviour {
     public float GetPercentageHP()
     {
         return (float)currentHP/(float)maxHP;
+    }
+    public int GetAttackStrength()
+    {
+        return attackStrength;
     }
 }

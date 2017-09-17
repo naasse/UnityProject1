@@ -6,9 +6,72 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     public Image enemyHealth;
+    public Text turnText;
+    public Text eventText;
+
+    private bool playerTurn;
+    private float timeWait = 1.0f;
+
+    private int roundNumber;
+
+    private List<string> eventLog = new List<string>();
+
+    private void Start()
+    {
+        playerTurn = true;
+        roundNumber = 1;
+        turnText.text = "Turn: Player";
+        eventText.text = "";
+        UpdateEventLog("Combat starting!");
+        UpdateEventLog("Round: " + roundNumber);
+    }
+
+    public bool IsPlayerTurn()
+    {
+        return playerTurn;
+    }
+    public void SetPlayerTurn(bool newPlayerTurn)
+    {
+        playerTurn = newPlayerTurn;
+        if (playerTurn)
+        {
+            turnText.text = "Players Turn";
+            roundNumber++;
+            UpdateEventLog("Round: " + roundNumber);
+        }
+        else
+            turnText.text = "Enemies Turn";
+        UpdateEventLog(turnText.text);
+    }
+
+    private void DoEnemyTurn()
+    {
+        PlayerController player = GameObject.Find("Player").GetComponent<PlayerController>();
+        GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemyObject in enemyList)
+        {
+            EnemyController enemy = enemyObject.GetComponent<EnemyController>();
+            player.TakeDamage(enemy.GetAttackStrength());            
+            //TODO - these should be handled in the respective element controller, I think
+            UpdateEventLog("Player took 1 damage from " + enemy.name);
+        }
+
+        SetPlayerTurn(true);
+    }
 
     private void FixedUpdate()
     {
+        if (timeWait <= 0)
+            timeWait = 1.0f;
+        if (!playerTurn)
+        {
+            timeWait -= Time.deltaTime;
+            if (timeWait < 0)
+            {
+                DoEnemyTurn();
+            }
+        }
         //MouseListener
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -46,5 +109,14 @@ public class GameController : MonoBehaviour
                 enemyHealth.gameObject.SetActive(false);
             }
         }
+    }
+
+    //TODO - scrollable, or only display subset
+    //Maybe have all available somewhere (or at least the last x)
+    public void UpdateEventLog(string message)
+    {
+        eventLog.Add(message);
+        eventText.text += "\n" + System.DateTime.Now + ": " + message;
+
     }
 }
