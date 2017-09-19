@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+
     public Image enemyHealth;
     public Text turnText;
     public Text eventText;
@@ -14,16 +15,20 @@ public class GameController : MonoBehaviour
 
     private int roundNumber;
 
+
     private List<string> eventLog = new List<string>();
+
+    PlayerController player;
 
     private void Start()
     {
-        playerTurn = true;
         roundNumber = 1;
         turnText.text = "Turn: Player";
         eventText.text = "";
         UpdateEventLog("Combat starting!");
         UpdateEventLog("Round: " + roundNumber);
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
+        SetPlayerTurn(true);
     }
 
     public bool IsPlayerTurn()
@@ -38,15 +43,21 @@ public class GameController : MonoBehaviour
             turnText.text = "Players Turn";
             roundNumber++;
             UpdateEventLog("Round: " + roundNumber);
+            player.startTurn();
         }
         else
+        {
+            player.endTurn();
             turnText.text = "Enemies Turn";
+
+        }
+            
+ 
         UpdateEventLog(turnText.text);
     }
 
     private void DoEnemyTurn()
     {
-        PlayerController player = GameObject.Find("Player").GetComponent<PlayerController>();
         GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (GameObject enemyObject in enemyList)
