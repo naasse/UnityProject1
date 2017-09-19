@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     public float maxMovement;
     private float currentMovement;
     private GameObject movementRadius;
+    public float maxClimbHeight;
+    public float climbHeightResolution;
+    public float maxFallDist;
 
     private void Start()
     {
@@ -94,22 +97,24 @@ public class PlayerController : MonoBehaviour
     {
         if (canMove)
         {
-            if (currentMovement > 0) { 
+            if (currentMovement > 0) {
                 //Update movement to correct direction
                 Vector3 movement = Quaternion.Euler(0, 45, 0) * new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
-                movement = movement * Time.deltaTime*speed;
+                movement = movement * Time.deltaTime * speed;
                 float movelength = movement.magnitude;
                 float newMovelength = Mathf.Clamp(movelength, 0, currentMovement);
                 //check if need to limmit movement
                 if (movelength != newMovelength)
                 {
                     movement = newMovelength * movement.normalized;
-                    currentMovement -= movelength;
                 }
-                else currentMovement -= movelength;
-                rb.MovePosition(rb.transform.position+movement);
-
-                updateMovementRadius();
+                //checks if current movement leads into a pit greater than maxFallDist;
+                if (!pitCheck(movement)) {
+                    rb.MovePosition(rb.transform.position + movement);
+                    currentMovement -= movement.magnitude;
+                    updateMovementRadius();
+                }
+                
             }
         }
     }
@@ -129,6 +134,17 @@ public class PlayerController : MonoBehaviour
     public void endTurn()
     {
         setCanMove(false);
+    }
+
+    private bool pitCheck(Vector3 nextStep)
+    {
+        bool tooFar = false;
+        if(!Physics.Raycast(rb.transform.position+nextStep,new Vector3(0,-1,0), maxFallDist)){
+            tooFar = true;
+            print("Found nothing");
+        }
+        print("Found nothing");
+        return tooFar;
     }
     public void updateMovementRadius()
     {
