@@ -107,8 +107,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f363f325fd15ad458d04f3f1841f918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: '"MyName"'
   EquiptType: 2
   pickupable: 1
+  isPickedUp: 0
   health: 10
   sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  mesh: {fileID: 0}
