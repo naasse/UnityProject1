@@ -30,6 +30,7 @@ public class Inventory : MonoBehaviour {
         {
             if (items[i] == null)
             {
+                // add item to list, then take its sprite and enable it
                 items[i] = newItem;
                 itemImages[i].sprite = newItem.sprite;
                 itemImages[i].enabled = true;
