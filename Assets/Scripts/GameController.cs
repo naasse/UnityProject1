@@ -9,26 +9,24 @@ public class GameController : MonoBehaviour
     public Image enemyHealth;
     public Text turnText;
     public Text eventText;
+    public Text enemyCountText;
 
     private bool playerTurn;
     private float timeWait = 1.0f;
-
     private int roundNumber;
-
-
+    private GameObject[] enemyList;
     private List<string> eventLog = new List<string>();
 
     PlayerController player;
 
     private void Start()
     {
-        roundNumber = 1;
-        turnText.text = "Turn: Player";
-        eventText.text = "";
+        roundNumber = 0;
         UpdateEventLog("Combat starting!");
-        UpdateEventLog("Round: " + roundNumber);
         player = GameObject.Find("Player").GetComponent<PlayerController>();
+        enemyList = GameObject.FindGameObjectsWithTag("Enemy");
         SetPlayerTurn(true);
+        GetRemainingEnemies();        
     }
 
     public bool IsPlayerTurn()
@@ -43,29 +41,31 @@ public class GameController : MonoBehaviour
             turnText.text = "Players Turn";
             roundNumber++;
             UpdateEventLog("Round: " + roundNumber);
+            player.GetComponent<Rigidbody>().isKinematic = false;
             player.startTurn();
         }
         else
         {
             player.endTurn();
+            player.GetComponent<Rigidbody>().isKinematic = true;
             turnText.text = "Enemies Turn";
 
         }
-            
  
         UpdateEventLog(turnText.text);
     }
 
     private void DoEnemyTurn()
     {
-        GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (GameObject enemyObject in enemyList)
         {
-            EnemyController enemy = enemyObject.GetComponent<EnemyController>();
-            player.TakeDamage(enemy.GetAttackStrength());            
-            //TODO - these should be handled in the respective element controller, I think
-            UpdateEventLog("Player took 1 damage from " + enemy.name);
+            //If player dies during enemy turns, should skip the rest of enemies - would change when more than 1 player
+            if (player.GetCurrentHP() <= 0)
+            {
+                break;
+            }
+            enemyObject.GetComponent<EnemyController>().TakeTurn();
         }
 
         SetPlayerTurn(true);
@@ -123,11 +123,35 @@ public class GameController : MonoBehaviour
     }
 
     //TODO - scrollable, or only display subset
+    //inefficient, rebuilding last 10 every time? Quick fix to keep from flowing off the page. If stick with this, definitely want to pop early records off list as this grows - 
+    //although destroying after combat would probably be sufficient. Cleanest would be when adding 10th record, pop 0 index off queue.
     //Maybe have all available somewhere (or at least the last x)
     public void UpdateEventLog(string message)
     {
-        eventLog.Add(message);
-        eventText.text += "\n" + System.DateTime.Now + ": " + message;
+        string msgAndDate = "\n" + System.DateTime.Now + ": " + message;
+        eventLog.Add(msgAndDate);
 
+        eventText.text = "";
+        int msgNum = 0;
+        foreach (string msgText in eventLog)
+        {
+            //Only displaying last 10 messages
+            if (msgNum >= eventLog.Count - 10)
+            {
+                eventText.text += msgText;
+            }
+            msgNum++;
+        }
+    }
+
+    public void GetRemainingEnemies()
+    {
+        //TODO - don't refetch, pop them from list when they die and rely on gamecontroller Start() original list
+        enemyList = GameObject.FindGameObjectsWithTag("Enemy");
+        enemyCountText.text = "Enemies Remaining: " + enemyList.Length;
+        if (enemyList.Length <= 0)
+        {
+            UpdateEventLog("You won!");
+        }
     }
 }

@@ -194,10 +194,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03141dee03d6c7e418a410964c73d3d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 3
   attackStrength: 1
+  healStrength: 10
+  healCount: 5
+  maxHP: 20
   statusText: {fileID: 0}
+  inventoryText: {fileID: 0}
   maxMovement: 5
+  maxClimbHeight: 0
+  climbHeightResolution: 0
+  maxFallDist: 3
+  inventory: {fileID: 0}
 --- !u!136 &136501387294460046
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -8,11 +8,15 @@ public class PlayerController : MonoBehaviour
 {
     public float speed;
     public int attackStrength;
+    public int healStrength;
+    public int healCount;
     private Rigidbody rb;
+    private GameController gameController;
 
     public int maxHP;
     private int currentHP;
     public Text statusText;
+    public Text inventoryText;
 
     private bool canMove=false;
     public float maxMovement;
@@ -31,12 +35,24 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = true;
         SetStatusText();
         regenMovement();
+        SetInventoryText();
+        gameController = GameObject.Find("EventSystem").GetComponent<GameController>();
         movementRadius = GameObject.Find("MoveRadius");
     }
 
     private void SetStatusText()
     {
         statusText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
+    }
+
+    private void SetStatusText(string append)
+    {
+        statusText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString() + " - " + append;
+    }
+
+    private void SetInventoryText()
+    {
+        inventoryText.text = "Heals Remaining: " + healCount;
     }
 
     private void FixedUpdate()
@@ -72,16 +88,23 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 1000f))
         {
-            GameController gameController = GameObject.Find("EventSystem").GetComponent<GameController>();
+
             //If hovering on enemy, click to attack
-            if (gameController.IsPlayerTurn()) 
+            if (gameController.IsPlayerTurn())
             {
-                if (hit.collider.gameObject.tag == "Enemy" && Input.GetMouseButtonDown(0))
+                //TODO - better way to set player active state on turn than HP > 0 probably. No game over screen yet when programming this, soooo.
+                if (hit.collider.gameObject.tag == "Enemy" && Input.GetMouseButtonDown(0) && GetCurrentHP() > 0)
                 {
                     EnemyController enemy = hit.collider.gameObject.GetComponent<EnemyController>();
                     enemy.TakeDamage(attackStrength);
                     gameController.UpdateEventLog("Player dealt " + attackStrength + " damage to " + enemy.name);
                     gameController.SetPlayerTurn(false);
+                }
+                else if (hit.collider.gameObject.tag == "Player" && Input.GetMouseButtonDown(0) && GetCurrentHP() > 0)
+                {
+                    //Click to Heal
+                    //TODO - some kind of active player component, as could be more than one player unit, also the flexibility of using same script to attack player from enemy
+                    Heal(healStrength);
                 }
             }
         }
@@ -90,16 +113,41 @@ public class PlayerController : MonoBehaviour
     {
         currentHP -= damageAmount;
         SetStatusText();
+        if (currentHP <= 0)
+        {
+            SetGameOver();
+        }
+    }
+    public void SetGameOver()
+    {
         //Game over screen
+        //TODO, game over screen and actually end combat
+        gameController.UpdateEventLog("You lost!");
+
     }
     public void Heal(int healAmount)
     {
-        currentHP += healAmount;
-        if (currentHP > maxHP)
-            currentHP = maxHP;
-        SetStatusText();
+        if (healCount > 0)
+        {
+            currentHP += healAmount;
+            if (currentHP > maxHP)
+                currentHP = maxHP;
+            SetStatusText("Healed " + healAmount);
+            gameController.UpdateEventLog("Player healed " + healAmount);
+            healCount--;
+            SetInventoryText();
+            gameController.SetPlayerTurn(false);
+        }
+        else
+        {
+            gameController.UpdateEventLog("No heals left!");
+        }
     }
     public int GetMaxHP()
+    {
+        return maxHP;
+    }
+    public int GetHealCount()
     {
         return maxHP;
     }
