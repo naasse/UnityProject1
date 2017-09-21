@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public float climbHeightResolution;
     public float maxFallDist;
 
+    public Inventory inventory;
+
     private void Start()
     {
         currentHP = maxHP;
@@ -41,7 +43,28 @@ public class PlayerController : MonoBehaviour
     {
         //Movement
         move();
-        print(currentMovement);
+
+
+        if(Input.GetKeyDown(KeyCode.E)){
+            print("pressedE");
+            ItemScript temp = GameObject.FindGameObjectsWithTag("Item")[0].GetComponent<ItemScript>();
+            if((temp.transform.position - rb.transform.position).magnitude < 2)
+            {
+                PickupClickedItem(temp);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            print("pressedQ");
+            for(int i = 0; i < inventory.items.Length; i++)
+            {
+                if (inventory.items[i] != null)
+                {
+                    DropClickedItem(inventory.items[i]);
+                }
+            }
+
+        }
 
         //MouseListener
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -151,5 +174,17 @@ public class PlayerController : MonoBehaviour
         //scales radius to movement limmit
         movementRadius.transform.position = rb.transform.position+ new Vector3(0,-.6f,0);
         movementRadius.transform.localScale = new Vector3(currentMovement, .01f, currentMovement);
+    }
+
+    public void PickupClickedItem(ItemScript item)
+    {
+        if (item.GetComponent<ItemScript>().pickupable)
+        {
+            inventory.pickup(item);
+        }
+    }
+    public ItemScript DropClickedItem(ItemScript item)
+    {
+        return inventory.drop(item,rb.transform.position);
     }
     }
