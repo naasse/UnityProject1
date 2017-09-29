@@ -10,7 +10,6 @@ public class EnemyController : MonoBehaviour {
     private GameController gameController;
     private PlayerController player;
     private Rigidbody rb;
-
     // Use this for initialization
     void Start ()
     {
@@ -20,6 +19,7 @@ public class EnemyController : MonoBehaviour {
         gameController = GameObject.Find("EventSystem").GetComponent<GameController>();
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
+
     }
 
     public void TakeDamage(int damageAmount)

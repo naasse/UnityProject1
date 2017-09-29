@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
-
 public class PlayerController : MonoBehaviour
 {
     public float speed;
@@ -26,7 +24,8 @@ public class PlayerController : MonoBehaviour
     public float climbHeightResolution;
     public float maxFallDist;
 
-    public Inventory inventory;
+    private PlayerInventory inventory;
+    public bool inventoryOpen=false;
 
     private void Start()
     {
@@ -38,6 +37,7 @@ public class PlayerController : MonoBehaviour
         SetInventoryText();
         gameController = GameObject.Find("EventSystem").GetComponent<GameController>();
         movementRadius = GameObject.Find("MoveRadius");
+        inventory = transform.GetComponent<PlayerInventory>();
     }
 
     private void SetStatusText()
@@ -69,18 +69,7 @@ public class PlayerController : MonoBehaviour
                 PickupClickedItem(temp);
             }
         }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            print("pressedQ");
-            for(int i = 0; i < inventory.items.Length; i++)
-            {
-                if (inventory.items[i] != null)
-                {
-                    DropClickedItem(inventory.items[i]);
-                }
-            }
 
-        }
 
         //MouseListener
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -180,10 +169,14 @@ public class PlayerController : MonoBehaviour
                     movement = newMovelength * movement.normalized;
                 }
                 //checks if current movement leads into a pit greater than maxFallDist;
-                if (!pitCheck(movement)) {
-                    rb.MovePosition(rb.transform.position + movement);
-                    currentMovement -= movement.magnitude;
-                    updateMovementRadius();
+                if(movement.magnitude > 0)
+                {
+                    if (!pitCheck(movement))
+                    {
+                        rb.MovePosition(rb.transform.position + movement);
+                        currentMovement -= movement.magnitude;
+                        updateMovementRadius();
+                    }
                 }
                 
             }
@@ -226,6 +219,7 @@ public class PlayerController : MonoBehaviour
 
     public void PickupClickedItem(ItemScript item)
     {
+        
         if (item.GetComponent<ItemScript>().pickupable)
         {
             inventory.pickup(item);
@@ -233,6 +227,7 @@ public class PlayerController : MonoBehaviour
     }
     public ItemScript DropClickedItem(ItemScript item)
     {
-        return inventory.drop(item,rb.transform.position);
+
+        return inventory.drop(rb.transform.position,item);
     }
     }

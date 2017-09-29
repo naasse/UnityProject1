@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 54128954852510378}
   - component: {fileID: 114571873720663326}
   - component: {fileID: 114304160590832388}
+  - component: {fileID: 114376484692816864}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -57,8 +58,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1240203865457264}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01, y: -0.34, z: -0}
-  m_LocalScale: {x: 1, y: 0.01, z: 1}
+  m_LocalPosition: {x: 0, y: -0.6, z: 0}
+  m_LocalScale: {x: -0.0000000037252903, y: 0.01, z: -0.0000000037252903}
   m_Children: []
   m_Father: {fileID: 4966221616435408}
   m_RootOrder: 0
@@ -69,8 +70,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1343321318182780}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.9566104, y: 2, z: 3.613748}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.49950016, y: 1.0855883, z: 0.85758585}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4730423001760840}
@@ -168,7 +169,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &114304160590832388
 MonoBehaviour:
@@ -183,6 +184,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 20846098774901354, guid: 644550bf7b60b8847bd5ff26edce71e0, type: 2}
   offset: {x: -5, y: 5, z: -5}
+--- !u!114 &114376484692816864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1343321318182780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16b7aa5ebf9fc5146a8ba926febb0e82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryTemplate: {fileID: 0}
 --- !u!114 &114571873720663326
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -206,6 +219,7 @@ MonoBehaviour:
   climbHeightResolution: 0
   maxFallDist: 3
   inventory: {fileID: 0}
+  inventoryOpen: 0
 --- !u!136 &136501387294460046
 CapsuleCollider:
   m_ObjectHideFlags: 1
