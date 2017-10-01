@@ -2,23 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour {
+public class EnemyController : UnitController {
 
     private int maxHP;
     private int currentHP;
     private int attackStrength;
     private GameController gameController;
     private PlayerController player;
-    private Rigidbody rb;
     // Use this for initialization
     void Start ()
     {
+        base.Start();
         maxHP = 10;
         currentHP = 10;
         attackStrength = 1;
         gameController = GameObject.Find("EventSystem").GetComponent<GameController>();
         player = GameObject.Find("Player").GetComponent<PlayerController>();
-        rb = GetComponent<Rigidbody>();
 
     }
 

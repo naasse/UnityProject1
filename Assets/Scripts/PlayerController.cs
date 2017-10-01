@@ -2,52 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class PlayerController : MonoBehaviour
+public class PlayerController : UnitController
 {
-    public float speed;
-    public int attackStrength;
-    public int healStrength;
-    public int healCount;
-    private Rigidbody rb;
+    private int healCount =5;
+    private int healStrength = 20;
     private GameController gameController;
 
-    public int maxHP;
-    private int currentHP;
+
     public Text statusText;
     public Text inventoryText;
 
-    private bool canMove=false;
-    public float maxMovement;
     private float currentMovement;
     private GameObject movementRadius;
     public float maxClimbHeight;
     public float climbHeightResolution;
     public float maxFallDist;
 
-    private PlayerInventory inventory;
+    private UnitInventory inventory;
     public bool inventoryOpen=false;
 
     private void Start()
     {
-        currentHP = maxHP;
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
+        base.Start();
         SetStatusText();
-        regenMovement();
         SetInventoryText();
         gameController = GameObject.Find("EventSystem").GetComponent<GameController>();
         movementRadius = GameObject.Find("MoveRadius");
-        inventory = transform.GetComponent<PlayerInventory>();
+        inventory = GetComponent<UnitInventory>();
+        inventory.setUnit(unit);
     }
 
     private void SetStatusText()
     {
-        statusText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
+        statusText.text = "HP: " + unit.healthCur.ToString() + " / " + unit.healthMax.ToString();
     }
 
     private void SetStatusText(string append)
     {
-        statusText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString() + " - " + append;
+        statusText.text = "HP: " + unit.healthCur.ToString() + " / " + unit.healthMax.ToString() + " - " + append;
     }
 
     private void SetInventoryText()
@@ -55,18 +47,25 @@ public class PlayerController : MonoBehaviour
         inventoryText.text = "Heals Remaining: " + healCount;
     }
 
+    private void Update()
+    {
+        InventoryCheck();
+    }
     private void FixedUpdate()
     {
         //Movement
         move();
 
-
         if(Input.GetKeyDown(KeyCode.E)){
             print("pressedE");
-            ItemScript temp = GameObject.FindGameObjectsWithTag("Item")[0].GetComponent<ItemScript>();
-            if((temp.transform.position - rb.transform.position).magnitude < 2)
+            GameObject[] temp = GameObject.FindGameObjectsWithTag("Item");
+            foreach (GameObject obj in temp)
             {
-                PickupClickedItem(temp);
+                if ((obj.transform.position - rb.transform.position).magnitude < 2)
+                {
+                    PickupClickedItem(obj.transform.GetComponent<ItemScript>());
+                    break;
+                }
             }
         }
 
@@ -85,8 +84,8 @@ public class PlayerController : MonoBehaviour
                 if (hit.collider.gameObject.tag == "Enemy" && Input.GetMouseButtonDown(0) && GetCurrentHP() > 0)
                 {
                     EnemyController enemy = hit.collider.gameObject.GetComponent<EnemyController>();
-                    enemy.TakeDamage(attackStrength);
-                    gameController.UpdateEventLog("Player dealt " + attackStrength + " damage to " + enemy.name);
+                    enemy.TakeDamage(unit.damage);
+                    gameController.UpdateEventLog("Player dealt " + unit.damage + " damage to " + enemy.name);
                     gameController.SetPlayerTurn(false);
                 }
                 else if (hit.collider.gameObject.tag == "Player" && Input.GetMouseButtonDown(0) && GetCurrentHP() > 0)
@@ -100,9 +99,9 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeDamage(int damageAmount)
     {
-        currentHP -= damageAmount;
+        unit.healthCur -= damageAmount;
         SetStatusText();
-        if (currentHP <= 0)
+        if (unit.healthCur <= 0)
         {
             SetGameOver();
         }
@@ -118,9 +117,9 @@ public class PlayerController : MonoBehaviour
     {
         if (healCount > 0)
         {
-            currentHP += healAmount;
-            if (currentHP > maxHP)
-                currentHP = maxHP;
+            unit.healthCur += healAmount;
+            if (unit.healthCur > unit.healthMax)
+                unit.healthCur = unit.healthMax;
             SetStatusText("Healed " + healAmount);
             gameController.UpdateEventLog("Player healed " + healAmount);
             healCount--;
@@ -134,23 +133,23 @@ public class PlayerController : MonoBehaviour
     }
     public int GetMaxHP()
     {
-        return maxHP;
+        return unit.healthMax;
     }
     public int GetHealCount()
     {
-        return maxHP;
+        return healCount;
     }
     public int GetCurrentHP()
     {
-        return currentHP;
+        return unit.healthCur;
     }
     public float GetPercentageHP()
     {
-        return (float)currentHP / (float)maxHP;
+        return (float)unit.healthCur / (float)unit.healthMax;
     }
     public float GetPercentageMoveLeft()
     {
-        return (float)currentMovement / (float)maxMovement;
+        return (float)currentMovement / (float)unit.movespeed;
     }
 
     public void move()
@@ -160,7 +159,7 @@ public class PlayerController : MonoBehaviour
             if (currentMovement > 0) {
                 //Update movement to correct direction
                 Vector3 movement = Quaternion.Euler(0, 45, 0) * new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
-                movement = movement * Time.deltaTime * speed;
+                movement = movement * Time.deltaTime * unit.movespeed;
                 float movelength = movement.magnitude;
                 float newMovelength = Mathf.Clamp(movelength, 0, currentMovement);
                 //check if need to limmit movement
@@ -188,7 +187,7 @@ public class PlayerController : MonoBehaviour
     }
     public void regenMovement()
     {
-        currentMovement = maxMovement;
+        currentMovement = unit.movespeed;
     }
     public void startTurn()
     {
@@ -205,9 +204,7 @@ public class PlayerController : MonoBehaviour
         bool tooFar = false;
         if(!Physics.Raycast(rb.transform.position+nextStep,new Vector3(0,-1,0), maxFallDist)){
             tooFar = true;
-            print("Found nothing");
         }
-        print("Found nothing");
         return tooFar;
     }
     public void updateMovementRadius()
@@ -229,5 +226,12 @@ public class PlayerController : MonoBehaviour
     {
 
         return inventory.drop(rb.transform.position,item);
+    }
+    public void InventoryCheck()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            inventory.ChangeInventoryState();
+        }
     }
     }

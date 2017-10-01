@@ -10,11 +10,13 @@ public class Draghandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     private static Vector3 startPosition;
     private static Transform startParent;
     public static ItemScript item;
+    public static bool dropSuccesful=false;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        dropSuccesful = false;
         draggedItem = gameObject;
-        print(gameObject);
+        print(gameObject.name);
         if (draggedItem.transform.parent.GetComponent<ItemSlotScript>().item != null) {
             item = gameObject.transform.parent.GetComponent<ItemSlotScript>().item;
         print(item.name);
@@ -28,12 +30,17 @@ public class Draghandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void OnEndDrag(PointerEventData eventData)
     {
-
         draggedItem.transform.position = startPosition;
         draggedItem.transform.SetParent(startParent);
         //GetComponent<CanvasGroup>().blocksRaycasts = true;
         draggedItem.transform.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        if (dropSuccesful)
+        {
+            draggedItem.transform.GetComponent<Image>().sprite =null;
+            //draggedItem.transform.GetComponent<Image>().enabled = false;
+        }
         draggedItem = null;
+
         print("Clearingitem");
         item = null;
 

@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class ItemScript : MonoBehaviour {
 
-    public enum EquiptSlotType { NonEquipable, Weapon, Armor};
+    public enum ItemType {NonEquipable, OneHandedWeapon, TwoHandedWeapon, Helm, ChestPiece, Legpiece, Glove, Boots, Active} ;
     public String name;
-    public EquiptSlotType EquiptType;
+    public ItemType EquiptType;
     public bool pickupable;
     public bool isPickedUp;
     public float health;
