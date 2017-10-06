@@ -14,6 +14,7 @@ public class InventoryGuiScript : MonoBehaviour {
     private int maxItemSlotsPerRow = 5;
 
     private List<GameObject> slots = new List<GameObject>();
+    private Dictionary<string, GameObject> equipSlots = new Dictionary<string, GameObject>();
 
     public void AddItemSlot(ItemScript item)
     {
@@ -28,12 +29,13 @@ public class InventoryGuiScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        findEquipSlots();
 
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
-
+       // UpdateInventory();
 	}
 
     public void pickup(ItemScript newItem)
@@ -56,50 +58,24 @@ public class InventoryGuiScript : MonoBehaviour {
     {
         int slotscounter = 0;
         clearInventory();
+        bool twoHander = false;
         foreach (ItemScript item in playerInv.itemList)
         {
-            print(item.name + " added to gui");   
+           // print(item.name + " added to gui");   
             AddItemSlot(item);
             slotscounter++;
         }
         for(int i = 0; i < maxItemSlotsPerRow-(slotscounter % maxItemSlotsPerRow); i++){
             AddItemSlot(null);
-        }
-        if (playerInv.Helm != null)
-        {
-            transform.Find("HelmSlot").GetComponent<ItemSlotScript>().setItem(playerInv.Helm);
-            
-        }
-        if (playerInv.Weapon1 != null)
-        {
-            transform.Find("Weapon1Slot").GetComponent<ItemSlotScript>().setItem(playerInv.Weapon1);
-        }
-        if (playerInv.Weapon2 != null)
-        {
-            transform.Find("Weapon2Slot").GetComponent<ItemSlotScript>().setItem(playerInv.Weapon2);
-        }
-        if (playerInv.Chestpiece!= null)
-        {
-            transform.Find("ChestPieceSlot").GetComponent<ItemSlotScript>().setItem(playerInv.Chestpiece);
+        }transform.Find("HelmSlot").GetComponent<ItemSlotScript>().forceset(playerInv.Helm);
+         transform.Find("Weapon1Slot").GetComponent<ItemSlotScript>().forceset(playerInv.Weapon1);
+         transform.Find("Weapon2Slot").GetComponent<ItemSlotScript>().forceset(playerInv.Weapon2);
+         transform.Find("ChestPieceSlot").GetComponent<ItemSlotScript>().forceset(playerInv.Chestpiece);
+         transform.Find("GloveSlot").GetComponent<ItemSlotScript>().forceset(playerInv.Gloves);
+         transform.Find("LegPieceSlot").GetComponent<ItemSlotScript>().forceset(playerInv.LegPiece);
+        transform.Find("BootsSlot").GetComponent<ItemSlotScript>().forceset(playerInv.Boots);
+        transform.Find("ActiveSlot").GetComponent<ItemSlotScript>().forceset(playerInv.Active);
 
-        }
-        if (playerInv.Gloves != null)
-        {
-            transform.Find("GlovesSlot").GetComponent<ItemSlotScript>().setItem(playerInv.Gloves);
-        }
-        if (playerInv.LegPiece != null)
-        {
-            transform.Find("LegPiecelot").GetComponent<ItemSlotScript>().setItem(playerInv.LegPiece);
-
-        }
-        if (playerInv.Boots != null)
-        {
-            transform.Find("BootsSlot").GetComponent<ItemSlotScript>().setItem(playerInv.Boots);
-        }
-        if (playerInv.Active != null)
-        {
-            transform.Find("ActiveSlot").GetComponent<ItemSlotScript>().setItem(playerInv.Active);
-        }
         playerInv.hasChanged = false;
     }
     public void closeInventory()
@@ -109,11 +85,23 @@ public class InventoryGuiScript : MonoBehaviour {
     }
     public void clearInventory()
     {
+        //print("destroyingslots");
+
         foreach (GameObject slot in slots)
         {
+           // print("destroyingslots");
             Destroy(slot);
         }
         slots.Clear();
+        slots = new List<GameObject>();
     }
-
+    private void findEquipSlots()
+    {
+        for(int i =0; i< gameObject.transform.childCount; i++){
+            if (gameObject.transform.GetChild(i).tag.Equals("Slot"))
+            {
+                equipSlots.Add(gameObject.transform.GetChild(i).name, gameObject.transform.GetChild(i).gameObject);
+            }
+        }
+    }
 }

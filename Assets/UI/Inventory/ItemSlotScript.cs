@@ -5,12 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class ItemSlotScript : MonoBehaviour, IDropHandler {
-
     public ItemScript item=null;
-    public ItemScript.ItemType accepting;
+
     public bool equiptSlot = false;
-	// Use this for initialization
-	void Start () {
+    public Equipable.EquipType slotType =Equipable.EquipType.none;
+    // Use this for initialization
+    void Start () {
 
 	}
 	
@@ -19,68 +19,91 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler {
 		
 	}
 
-    public void setItem(ItemScript setItem)
+    public bool setItem(ItemScript setItem)
     {
-        item = setItem;
-        if (setItem!= null)
+        //if (setItem) print("Trying to set " + setItem);
+        //else print("Tying to set Empty");
+        bool canSet = true;
+        if (equiptSlot)
         {
-            gameObject.transform.GetChild(1).GetComponent<Image>().sprite = item.sprite;
-            gameObject.transform.GetChild(1).GetComponent<Image>().enabled = true;
-            if (gameObject.name.Equals("HelmSlot")){
-                gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.equipt(item, "Helm");
-            }
-            else if (gameObject.name.Equals("Weapon1Slot")){
-                gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.equipt(item, "Weapon1");
-            }
-            else if (gameObject.name.Equals("LegPieceSlot"))
+            if (setItem)
             {
-                gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.equipt(item, "LegPiece");
-            }
-            else if (gameObject.name.Equals("ChestPieceSlot"))
-            {
-                gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.equipt(item, "ChestPiece");
-            }
-            else if (gameObject.name.Equals("GloveSlot"))
-            {
-                gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.equipt(item, "Gloves");
-            }
-            else if (gameObject.name.Equals("Weapon2Slot"))
-            {
-                gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.equipt(item, "Weapon2");
-            }
-            else if (gameObject.name.Equals("ActiveSlot"))
-            {
-                gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.equipt(item, "Active");
-            }
-            else if (gameObject.name.Equals("BootsSlot"))
-            {
-                gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.equipt(item, "Boots");
-            }
+                if (slotType.Equals(((Equipable)setItem.tags[ItemTag.TagTypes.Equipable]).type))
+                {
+                    canSet = gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.equipt(setItem, gameObject.name);
+                    print("Correct Slot Type/ Able To Equipt:" + canSet);
 
-        }
-        else {
-            print("null setItem");
-            gameObject.transform.GetChild(1).GetComponent<Image>().sprite = null;
-            gameObject.transform.GetChild(1).GetComponent<Image>().enabled = false;
-        }
 
+                }
+                else
+                {
+                    canSet = false;
+                    print("Incorrect Slot Type");
+                }
+            }
+        }
+        if (canSet)
+        {
+            item = setItem;
+            UpdateImage();
+        }
+        return canSet;
 
         
     }
  
+    public void UpdateImage()
+    {
+
+        if (item)
+        {
+            gameObject.transform.GetChild(1).GetComponent<Image>().sprite = item.sprite;
+            gameObject.transform.GetChild(1).GetComponent<Image>().enabled =true;
+        }
+        else
+        {
+            gameObject.transform.GetChild(1).GetComponent<Image>().sprite = null;
+            gameObject.transform.GetChild(1).GetComponent<Image>().enabled = false;
+        }
+    }
+    public void forceset(ItemScript item)
+    {
+        this.item = item;
+        UpdateImage();
+    }
     public void OnDrop (PointerEventData eventData)
     {
-        Draghandler.dropSuccesful = true;
-        print("got in OnDrop ");
-        if (item==null)
+        if (equiptSlot)
         {
-            print(Draghandler.item.name + " onDrop on " +this.name);
-  
-            setItem(Draghandler.item);
-            Draghandler.returnParent();
-            Draghandler.draggedItem.transform.parent.GetComponent<ItemSlotScript>().setItem(null);
-            print("null onDrop on " + Draghandler.draggedItem.transform.parent.GetComponent<ItemSlotScript>().name);
+            handleItemSet();
         }
+        else handleItemSet();
+
+    }
+    private void handleItemSet()
+    {
+        Draghandler.droppedOnSlot = true;
+            print(Draghandler.item.name + " onDrop on " + this.name);
+        if (item) print("Currently hodling " + item.name);
+        else print("Currently Holding Nothing");
+            ItemScript temp = item;
+            Draghandler.returnParent();
+        if (setItem(Draghandler.item))
+        {
+            print(Draghandler.draggedItem.transform.parent.name +" and set item =true");
+            Draghandler.replaceItem = true;
+            if (temp)
+            {
+                Draghandler.draggedItem.transform.parent.GetComponent<ItemSlotScript>().setItem(temp);
+                print("assinging temp to old slot");
+            }
+            else
+            {
+                Draghandler.draggedItem.transform.parent.GetComponent<ItemSlotScript>().setItem(null);
+                print("assinging null to old slot");
+            }
+            }
+        //print("null onDrop on " + Draghandler.draggedItem.transform.parent.GetComponent<ItemSlotScript>().name);
     }
 
 

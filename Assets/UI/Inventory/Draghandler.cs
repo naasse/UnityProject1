@@ -10,16 +10,18 @@ public class Draghandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     private static Vector3 startPosition;
     private static Transform startParent;
     public static ItemScript item;
-    public static bool dropSuccesful=false;
+    public static bool replaceItem=false;
+    public static bool droppedOnSlot = false;
+
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        dropSuccesful = false;
+        replaceItem = false;
+        droppedOnSlot = false;
         draggedItem = gameObject;
-        print(gameObject.name);
         if (draggedItem.transform.parent.GetComponent<ItemSlotScript>().item != null) {
             item = gameObject.transform.parent.GetComponent<ItemSlotScript>().item;
-        print(item.name);
+        print("Dragging"+item.name);
         startPosition = gameObject.transform.position;
         startParent = gameObject.transform.parent;
         gameObject.transform.SetParent(transform.root);
@@ -30,18 +32,8 @@ public class Draghandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        draggedItem.transform.position = startPosition;
-        draggedItem.transform.SetParent(startParent);
-        //GetComponent<CanvasGroup>().blocksRaycasts = true;
-        draggedItem.transform.GetComponent<CanvasGroup>().blocksRaycasts = true;
-        if (dropSuccesful)
-        {
-            draggedItem.transform.GetComponent<Image>().sprite =null;
-            //draggedItem.transform.GetComponent<Image>().enabled = false;
-        }
+        if(!droppedOnSlot)returnParent();
         draggedItem = null;
-
-        print("Clearingitem");
         item = null;
 
 
@@ -55,5 +47,6 @@ public class Draghandler : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     {
         draggedItem.transform.position = startPosition;
         draggedItem.transform.SetParent(startParent);
+        draggedItem.transform.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 }

@@ -30,6 +30,7 @@ public class PlayerController : UnitController
         movementRadius = GameObject.Find("MoveRadius");
         inventory = GetComponent<UnitInventory>();
         inventory.setUnit(unit);
+        setCombat(false);
     }
 
     private void SetStatusText()
@@ -78,7 +79,7 @@ public class PlayerController : UnitController
         {
 
             //If hovering on enemy, click to attack
-            if (gameController.IsPlayerTurn())
+            if (isTurn)
             {
                 //TODO - better way to set player active state on turn than HP > 0 probably. No game over screen yet when programming this, soooo.
                 if (hit.collider.gameObject.tag == "Enemy" && Input.GetMouseButtonDown(0) && GetCurrentHP() > 0)
@@ -156,16 +157,19 @@ public class PlayerController : UnitController
     {
         if (canMove)
         {
-            if (currentMovement > 0) {
+            if (currentMovement > 0 || !combatPhase) {
                 //Update movement to correct direction
                 Vector3 movement = Quaternion.Euler(0, 45, 0) * new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
                 movement = movement * Time.deltaTime * unit.movespeed;
                 float movelength = movement.magnitude;
-                float newMovelength = Mathf.Clamp(movelength, 0, currentMovement);
-                //check if need to limmit movement
-                if (movelength != newMovelength)
+                if (combatPhase)
                 {
-                    movement = newMovelength * movement.normalized;
+                    float newMovelength = Mathf.Clamp(movelength, 0, currentMovement);
+                    //check if need to limmit movement
+                    if (movelength != newMovelength)
+                    {
+                        movement = newMovelength * movement.normalized;
+                    }
                 }
                 //checks if current movement leads into a pit greater than maxFallDist;
                 if(movement.magnitude > 0)
@@ -174,7 +178,7 @@ public class PlayerController : UnitController
                     {
                         rb.MovePosition(rb.transform.position + movement);
                         currentMovement -= movement.magnitude;
-                        updateMovementRadius();
+                        if (combatPhase) updateMovementRadius();
                     }
                 }
                 
@@ -233,5 +237,11 @@ public class PlayerController : UnitController
         {
             inventory.ChangeInventoryState();
         }
+    }
+    public void setCombat(bool combat)
+    {
+        combatPhase = combat;
+        isTurn = false;
+        canMove = true;
     }
     }

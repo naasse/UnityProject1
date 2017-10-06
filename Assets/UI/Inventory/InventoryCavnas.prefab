@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 114961067461518336}
   m_Layer: 5
   m_Name: Weapon1Slot
-  m_TagString: Untagged
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 114787319519077102}
   m_Layer: 5
   m_Name: Weapon2Slot
-  m_TagString: Untagged
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,7 +247,7 @@ GameObject:
   - component: {fileID: 114816513138057436}
   m_Layer: 5
   m_Name: BootsSlot
-  m_TagString: Untagged
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -424,7 +424,7 @@ GameObject:
   - component: {fileID: 114441385520355178}
   m_Layer: 5
   m_Name: ActiveSlot
-  m_TagString: Untagged
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 114940029133576240}
   m_Layer: 5
   m_Name: ChestPieceSlot
-  m_TagString: Untagged
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -630,7 +630,7 @@ GameObject:
   - component: {fileID: 114286742293610974}
   m_Layer: 5
   m_Name: HelmSlot
-  m_TagString: Untagged
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 114401926680204194}
   m_Layer: 5
   m_Name: LegPieceSlot
-  m_TagString: Untagged
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -715,7 +715,7 @@ GameObject:
   - component: {fileID: 114635110806555164}
   m_Layer: 5
   m_Name: GloveSlot
-  m_TagString: Untagged
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1176,8 +1176,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
-  accepting: 0
-  equiptSlot: 0
+  equiptSlot: 1
+  slotType: 2
 --- !u!114 &114350689669315108
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1247,8 +1247,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
-  accepting: 0
-  equiptSlot: 0
+  equiptSlot: 1
+  slotType: 4
 --- !u!114 &114412468866261144
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1284,8 +1284,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
-  accepting: 0
-  equiptSlot: 0
+  equiptSlot: 1
+  slotType: 7
 --- !u!114 &114460572892511816
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1298,8 +1298,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
-  accepting: 0
   equiptSlot: 0
+  slotType: 0
 --- !u!114 &114483716605374414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1507,8 +1507,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
-  accepting: 0
-  equiptSlot: 0
+  equiptSlot: 1
+  slotType: 5
 --- !u!114 &114659725918937056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1617,8 +1617,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
-  accepting: 0
-  equiptSlot: 0
+  equiptSlot: 1
+  slotType: 1
 --- !u!114 &114788456481691410
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1728,8 +1728,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
-  accepting: 0
-  equiptSlot: 0
+  equiptSlot: 1
+  slotType: 6
 --- !u!114 &114837333693158388
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1948,8 +1948,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
-  accepting: 0
-  equiptSlot: 0
+  equiptSlot: 1
+  slotType: 3
 --- !u!114 &114941002296528036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2025,8 +2025,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
-  accepting: 0
-  equiptSlot: 0
+  equiptSlot: 1
+  slotType: 1
 --- !u!114 &114964379412938592
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -20,6 +20,7 @@ public class UnitScript : MonoBehaviour {
     public int Charisma=10;
 
     public int Armour;
+    public bool inCombat =false;
 
 
     // Use this for initialization

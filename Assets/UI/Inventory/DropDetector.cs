@@ -19,7 +19,7 @@ public class DropDetector : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        Draghandler.dropSuccesful = true;
+        Draghandler.replaceItem = true;
         print("DroppingItem");
         Draghandler.returnParent();
         gameObject.transform.parent.transform.Find("Inventory").GetComponent<InventoryGuiScript>().drop(Draghandler.draggedItem.transform.parent.GetComponent<ItemSlotScript>().item);
