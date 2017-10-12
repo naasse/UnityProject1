@@ -85,7 +85,7 @@ public class PlayerController : UnitController
                 if (hit.collider.gameObject.tag == "Enemy" && Input.GetMouseButtonDown(0) && GetCurrentHP() > 0)
                 {
                     EnemyController enemy = hit.collider.gameObject.GetComponent<EnemyController>();
-                    enemy.TakeDamage(unit.damage);
+                    enemy.TakeDamage((int)unit.damage);
                     gameController.UpdateEventLog("Player dealt " + unit.damage + " damage to " + enemy.name);
                     gameController.SetPlayerTurn(false);
                 }

@@ -83,6 +83,7 @@ public class UnitInventory : MonoBehaviour {
 
     public void dequipt(string slot)
     {
+        bool dequipted = true;
         print("dequipting " + slot);
             switch (slot)
             {
@@ -120,12 +121,17 @@ public class UnitInventory : MonoBehaviour {
                     Active = null;
                     break;
             default:
+                dequipted = false;
                 break;
 
             }
+        if (dequipted)
+        {
+            unit.UpdateStats();
+            //inventory.transform.Find("Inventory").GetComponent<InventoryGuiScript>().UpdateInventory();
+        }
 
-
-            hasChanged = true;
+        hasChanged = true;
         
     }
     public void setUnit(UnitScript unit)
@@ -212,5 +218,46 @@ public class UnitInventory : MonoBehaviour {
             return ((Weapon)item).requiredHands <= numHands;
         }
         return true;
+    }
+
+    public float calculateDamage()
+    {
+        float damage = 1;
+        if (Weapon1!=null)
+        {
+            damage += Weapon1.damage;
+        }
+        if (Weapon2 != null)
+        {
+            damage += Weapon2.damage;
+        }
+        return damage;
+    }
+    public float[] calculateResistance()
+    {
+        float[] resists = new float[1];
+        float armor = 1;
+        if (Helm != null)
+        {
+            armor += Helm.defense;
+        }
+        if (Gloves != null)
+        {
+            armor += Gloves.defense;
+        }
+        if (Chestpiece != null)
+        {
+            armor += Chestpiece.defense;
+        }
+        if (LegPiece != null)
+        {
+            armor += LegPiece.defense;
+        }
+        if (Boots != null)
+        {
+            armor += Boots.defense;
+        }
+        resists[0] = armor;
+        return resists;
     }
 }

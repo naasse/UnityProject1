@@ -9,7 +9,7 @@ public class UnitScript : MonoBehaviour {
     public int healthMax;
     public int healthCur;
 
-    public int damage;
+    public float damage=1;
     public int attackSpeed;
 
     public int Strength=10;
@@ -19,13 +19,14 @@ public class UnitScript : MonoBehaviour {
     public int Intelligence=10;
     public int Charisma=10;
 
-    public int Armour;
+    public float armor;
     public bool inCombat =false;
 
 
     // Use this for initialization
      void Start () {
         healthCur = healthMax;
+        inv =gameObject.transform.GetComponent<UnitInventory>();
 	}
 	
 	// Update is called once per frame
@@ -34,6 +35,7 @@ public class UnitScript : MonoBehaviour {
 	}
     public void UpdateStats()
     {
-
+        damage = inv.calculateDamage();
+        armor = inv.calculateResistance()[0];
     }
 }

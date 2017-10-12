@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 23949080311112170}
   - component: {fileID: 54128954852510378}
   - component: {fileID: 114571873720663326}
+  - component: {fileID: 114757260562666552}
   - component: {fileID: 114548367711140302}
   - component: {fileID: 114304160590832388}
   m_Layer: 0
@@ -182,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c21cbfb81c5d9b4f9e7654aafcefdef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 20846098774901354, guid: 644550bf7b60b8847bd5ff26edce71e0, type: 2}
+  camera: {fileID: 0}
   offset: {x: -5, y: 5, z: -5}
 --- !u!114 &114548367711140302
 MonoBehaviour:
@@ -196,6 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryTemplate: {fileID: 0}
+  inventoryOpen: 0
   itemList: []
   Helm: {fileID: 0}
   Weapon1: {fileID: 0}
@@ -205,6 +207,7 @@ MonoBehaviour:
   Boots: {fileID: 0}
   Gloves: {fileID: 0}
   Active: {fileID: 0}
+  unit: {fileID: 0}
   hasChanged: 0
 --- !u!114 &114571873720663326
 MonoBehaviour:
@@ -217,18 +220,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03141dee03d6c7e418a410964c73d3d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  attackStrength: 1
-  healStrength: 10
-  healCount: 5
-  maxHP: 20
+  isTurn: 0
   statusText: {fileID: 0}
   inventoryText: {fileID: 0}
-  maxMovement: 5
   maxClimbHeight: 0
   climbHeightResolution: 0
   maxFallDist: 3
   inventoryOpen: 0
+--- !u!114 &114757260562666552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1343321318182780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 485799932b751e348930488023ec1ac6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movespeed: 5
+  healthMax: 20
+  healthCur: 20
+  damage: 5
+  attackSpeed: 5
+  Strength: 10
+  Dexterity: 10
+  Constituion: 10
+  Wisdom: 10
+  Intelligence: 10
+  Charisma: 10
+  Armour: 5
+  inCombat: 0
 --- !u!136 &136501387294460046
 CapsuleCollider:
   m_ObjectHideFlags: 1

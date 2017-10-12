@@ -87,6 +87,8 @@ public class InventoryGuiScript : MonoBehaviour {
         transform.Find("BootsSlot").GetComponent<ItemSlotScript>().UpdateImage();
         transform.Find("ActiveSlot").GetComponent<ItemSlotScript>().UpdateImage();
 
+        transform.parent.Find("ArmorText").GetComponent<Text>().text = "Armor=" + playerInv.unit.armor;
+        transform.parent.Find("DamageText").GetComponent<Text>().text = "Damage=" + playerInv.unit.damage;
         playerInv.hasChanged = false;
     }
     public void closeInventory()
