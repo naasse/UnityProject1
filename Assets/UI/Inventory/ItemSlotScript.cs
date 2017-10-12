@@ -8,7 +8,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler {
     public ItemScript item=null;
 
     public bool equiptSlot = false;
-    public Equipable.EquipType slotType =Equipable.EquipType.none;
+    public Equipment.EquipType slotType;
     // Use this for initialization
     void Start () {
 
@@ -26,9 +26,9 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler {
         bool canSet = true;
         if (equiptSlot)
         {
-            if (setItem)
+            if (setItem!=null)
             {
-                if (slotType.Equals(((Equipable)setItem.tags[ItemTag.TagTypes.Equipable]).type))
+                if (slotType.Equals(((Equipment)setItem).type))
                 {
                     canSet = gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.equipt(setItem, gameObject.name);
                     print("Correct Slot Type/ Able To Equipt:" + canSet);
@@ -55,7 +55,7 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler {
     public void UpdateImage()
     {
 
-        if (item)
+        if (item!=null)
         {
             gameObject.transform.GetChild(1).GetComponent<Image>().sprite = item.sprite;
             gameObject.transform.GetChild(1).GetComponent<Image>().enabled =true;
@@ -73,26 +73,21 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler {
     }
     public void OnDrop (PointerEventData eventData)
     {
-        if (equiptSlot)
-        {
-            handleItemSet();
-        }
-        else handleItemSet();
-
-    }
-    private void handleItemSet()
-    {
         Draghandler.droppedOnSlot = true;
-            print(Draghandler.item.name + " onDrop on " + this.name);
-        if (item) print("Currently hodling " + item.name);
+        print(Draghandler.item.name + " onDrop on " + this.name);
+        if (item != null) print("Currently hodling " + item.name);
         else print("Currently Holding Nothing");
-            ItemScript temp = item;
-            Draghandler.returnParent();
+        ItemScript temp = item;
+        Draghandler.returnParent();
         if (setItem(Draghandler.item))
         {
-            print(Draghandler.draggedItem.transform.parent.name +" and set item =true");
+            print(Draghandler.draggedItem.transform.parent.name + " and set item =true");
             Draghandler.replaceItem = true;
-            if (temp)
+            if (Draghandler.item!=null && Draghandler.equipmentSlot)
+            {
+                gameObject.transform.root.Find("Inventory").GetComponent<InventoryGuiScript>().playerInv.dequipt(Draghandler.draggedItem.gameObject.transform.parent.name);
+            }
+            if (temp != null)
             {
                 Draghandler.draggedItem.transform.parent.GetComponent<ItemSlotScript>().setItem(temp);
                 print("assinging temp to old slot");
@@ -102,10 +97,11 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler {
                 Draghandler.draggedItem.transform.parent.GetComponent<ItemSlotScript>().setItem(null);
                 print("assinging null to old slot");
             }
-            }
-        //print("null onDrop on " + Draghandler.draggedItem.transform.parent.GetComponent<ItemSlotScript>().name);
-    }
 
+        }
+        //print("null onDrop on " + Draghandler.draggedItem.transform.parent.GetComponent<ItemSlotScript>().name);
+
+    }
 
 }
 

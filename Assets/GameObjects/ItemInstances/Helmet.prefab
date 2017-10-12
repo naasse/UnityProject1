@@ -22,9 +22,7 @@ GameObject:
   - component: {fileID: 23500209741243958}
   - component: {fileID: 64495037261147120}
   - component: {fileID: 33114167379150628}
-  - component: {fileID: 114056800446884486}
-  - component: {fileID: 114735218833498650}
-  - component: {fileID: 114447221460250466}
+  - component: {fileID: 114573119819050062}
   m_Layer: 0
   m_Name: Helmet
   m_TagString: Item
@@ -98,7 +96,7 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114056800446884486
+--- !u!114 &114573119819050062
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,41 +104,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1926462451963798}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f363f325fd15ad458d04f3f1841f918, type: 3}
+  m_Script: {fileID: 11500000, guid: ee107816cd154b448ad03ad7bc1bf7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   name: Helmet
-  EquiptType: 3
   pickupable: 1
   isPickedUp: 0
-  health: 10
+  health: 0
   sprite: {fileID: 21300000, guid: 647e8e45f1db52444a8738ea0376579e, type: 3}
---- !u!114 &114447221460250466
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1926462451963798}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c73440d72b0fd649980dece000ba01b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 1
-  requireTags: []
   type: 2
---- !u!114 &114735218833498650
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1926462451963798}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5df62b42b8280c49882898004b4f50a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 2
-  requireTags: []
-  wearType: 0
-  physicalDef: 1
+  defense: 1

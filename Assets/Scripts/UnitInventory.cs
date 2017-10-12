@@ -9,14 +9,14 @@ public class UnitInventory : MonoBehaviour {
 
     public List<ItemScript> itemList;
 
-    public ItemScript Helm = null;
-    public ItemScript Weapon1 = null;
-    public ItemScript Weapon2 = null;
-    public ItemScript Chestpiece = null;
-    public ItemScript LegPiece = null;
-    public ItemScript Boots = null;
-    public ItemScript Gloves = null;
-    public ItemScript Active = null;
+    public Armor Helm = null;
+    public Weapon Weapon1 = null;
+    public Weapon Weapon2 = null;
+    public Armor Chestpiece = null;
+    public Armor LegPiece = null;
+    public Armor Boots = null;
+    public Armor Gloves = null;
+    public Active Active = null;
 
     private int numHands=2;
     public UnitScript unit;
@@ -30,7 +30,7 @@ public class UnitInventory : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (hasChanged) inventory.transform.Find("Inventory").GetComponent<InventoryGuiScript>().UpdateInventory();
+        if (hasChanged && inventoryOpen) inventory.transform.Find("Inventory").GetComponent<InventoryGuiScript>().UpdateInventory();
     }
     public void ChangeInventoryState()
     {
@@ -63,7 +63,7 @@ public class UnitInventory : MonoBehaviour {
         itemList.Add(item);
         item.gameObject.SetActive(false);
         hasChanged = true;
-        //inventory.transform.Find("Inventory").GetComponent<InventoryGuiScript>().UpdateInventory();
+        inventory.transform.Find("Inventory").GetComponent<InventoryGuiScript>().pickup(item);
         print("added " + item.name + " to inventory");
 
     }
@@ -81,43 +81,46 @@ public class UnitInventory : MonoBehaviour {
 
     }
 
-    private void dequipt(string slot)
+    public void dequipt(string slot)
     {
+        print("dequipting " + slot);
             switch (slot)
             {
-                case "Weapon1":
+                case "Weapon1Slot":
                     if(Weapon1!=null) itemList.Add(Weapon1);
                     Weapon1 = null;
                     break;
-                case "Weapon2":
+                case "Weapon2Slot":
                 if (Weapon2 != null) itemList.Add(Weapon2);
                     Weapon2 = null;
                     break;
-                case "Helm":
+                case "HelmSlot":
 
                 if (Helm != null) itemList.Add(Helm);
                     Helm = null;
                     break;
-                case "ChestPiece":
+                case "ChestPieceSlot":
                 if (Chestpiece != null) itemList.Add(Chestpiece);
                     Chestpiece = null;
                     break;
-                case "LegPiece":
+                case "LegPieceSlot":
                 if (LegPiece != null) itemList.Add(LegPiece);
                     LegPiece = null;
                     break;
-                case "Boots":
+                case "BootsSlot":
                 if (Boots != null) itemList.Add(Boots);
                 Boots = null;
                     break;
-                case "Gloves":
+                case "GloveSlot":
                 if (Gloves != null) itemList.Add(Gloves);
                     Gloves = null;
                     break;
-                case "Active":
+                case "ActiveSlot":
                 if (Active != null) itemList.Add(Active);
                     Active = null;
                     break;
+            default:
+                break;
 
             }
 
@@ -133,63 +136,61 @@ public class UnitInventory : MonoBehaviour {
     public bool equipt(ItemScript item, string slotname)
     {
         bool changed = false;
-        bool isArmor = item.hasTag(new Wearable());
-        bool isWeapon = item.hasTag(new Weaponizable());
-        switch (((Equipable)item.tags[ItemTag.TagTypes.Equipable]).type)
-        {
-            case Equipable.EquipType.Weapon:
-                Weaponizable newItemTag = ((Weaponizable)item.tags[ItemTag.TagTypes.Weaponizable]);
-                if (newItemTag.requiredHands == 1)
+
+        switch (((Equipment)item).type) { 
+            case Equipment.EquipType.Weapon:
+                Weapon temp = (Weapon)item;
+                if (temp.requiredHands == 1)
                 {
                     if (slotname.Equals("Weapon1Slot"))
                     {
-                        dequipt("Weapon1");
-                        Weapon1 = item;
+                        dequipt("Weapon1Slot");
+                        Weapon1 = temp;
                         changed = true;
                     }
                     else  if (slotname.Equals("Weapon2Slot"))
                     {
-                        dequipt("Weapon2");
-                        Weapon2 = item;
+                        dequipt("Weapon2Slot");
+                        Weapon2 = temp;
                         changed = true;
                     }
                 }
-                else if (newItemTag.requiredHands == 2)
+                else if (temp.requiredHands == 2)
                 {
-                    dequipt("Weapon1");
-                    dequipt("Weapon2");
-                    Weapon1 = item;
+                    dequipt("Weapon1Slot");
+                    dequipt("Weapon2Slot");
+                    Weapon1 = temp;
                     changed = true;
                 }
                 break;
-            case Equipable.EquipType.Helm:
-                dequipt("Helm");
-                Helm = item;
+            case Equipment.EquipType.Helm:
+                dequipt("HelmSlot");
+                Helm = (Armor)item;
                 changed = true;
                 break;
-            case Equipable.EquipType.Glove:
-                dequipt("Gloves");
-                Gloves = item;
+            case Equipment.EquipType.Glove:
+                dequipt("GloveSlot");
+                Gloves = (Armor)item;
                 changed = true;
                 break;
-            case Equipable.EquipType.ChestPiece:
-                dequipt("ChestPiece");
-                Chestpiece = item;
+            case Equipment.EquipType.ChestPiece:
+                dequipt("ChestPieceSlot");
+                Chestpiece = (Armor)item;
                 changed = true;
                 break;
-            case Equipable.EquipType.Legpiece:
-                dequipt("LegPiece");
-                LegPiece = item;
+            case Equipment.EquipType.Legpiece:
+                dequipt("LegPieceSlot");
+                LegPiece = (Armor)item;
                 changed = true;
                 break;
-            case Equipable.EquipType.Boots:
-                dequipt("Boots");
-                Boots = item;
+            case Equipment.EquipType.Boots:
+                dequipt("BootsSlot");
+                Boots = (Armor)item;
                 changed = true;
                 break;
-            case Equipable.EquipType.Active:
-                dequipt("Active");
-                Active = item;
+            case Equipment.EquipType.Active:
+                dequipt("ActiveSlot");
+                Active = (Active)item;
                 changed = true;
                 break;
         }
@@ -206,9 +207,9 @@ public class UnitInventory : MonoBehaviour {
 
     public bool meetsRequirements(ItemScript item)
     {
-        if (item.hasTag(new Weaponizable()))
+        if (((Weapon)item))
         {
-            return ((Weaponizable)item.tags[ItemTag.TagTypes.Weaponizable]).requiredHands <= numHands;
+            return ((Weapon)item).requiredHands <= numHands;
         }
         return true;
     }

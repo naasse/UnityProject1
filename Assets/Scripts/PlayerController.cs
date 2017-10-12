@@ -12,7 +12,7 @@ public class PlayerController : UnitController
     public Text statusText;
     public Text inventoryText;
 
-    private float currentMovement;
+    private float currentMovement=5;
     private GameObject movementRadius;
     public float maxClimbHeight;
     public float climbHeightResolution;
@@ -58,7 +58,7 @@ public class PlayerController : UnitController
         move();
 
         if(Input.GetKeyDown(KeyCode.E)){
-            print("pressedE");
+            //print("pressedE");
             GameObject[] temp = GameObject.FindGameObjectsWithTag("Item");
             foreach (GameObject obj in temp)
             {

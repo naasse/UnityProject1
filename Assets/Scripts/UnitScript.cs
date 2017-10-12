@@ -5,7 +5,7 @@ using UnityEngine;
 public class UnitScript : MonoBehaviour {
     protected UnitInventory inv;
 
-    public float movespeed;
+    public float movespeed=5;
     public int healthMax;
     public int healthCur;
 

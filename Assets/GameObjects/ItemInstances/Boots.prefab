@@ -22,9 +22,7 @@ GameObject:
   - component: {fileID: 23999838824151962}
   - component: {fileID: 64622308286383600}
   - component: {fileID: 33368472264616616}
-  - component: {fileID: 114131152751669954}
-  - component: {fileID: 114782061759539492}
-  - component: {fileID: 114833603800962696}
+  - component: {fileID: 114202903096115744}
   m_Layer: 0
   m_Name: Boots
   m_TagString: Item
@@ -98,7 +96,7 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114131152751669954
+--- !u!114 &114202903096115744
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,41 +104,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1626664702484736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f363f325fd15ad458d04f3f1841f918, type: 3}
+  m_Script: {fileID: 11500000, guid: ee107816cd154b448ad03ad7bc1bf7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   name: Boots
-  EquiptType: 7
   pickupable: 1
   isPickedUp: 0
-  health: 10
+  health: 0
   sprite: {fileID: 21300000, guid: 7ee8db4974405c84bb7825ec0bf447cc, type: 3}
---- !u!114 &114782061759539492
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1626664702484736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5df62b42b8280c49882898004b4f50a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 2
-  requireTags: []
-  wearType: 0
-  physicalDef: 1
---- !u!114 &114833603800962696
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1626664702484736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c73440d72b0fd649980dece000ba01b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 1
-  requireTags: []
   type: 6
+  defense: 1

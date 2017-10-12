@@ -5,7 +5,7 @@ using UnityEngine;
 public class UnitController : MonoBehaviour {
     protected UnitScript unit;
     protected Rigidbody rb;
-    protected bool canMove = false;
+    protected bool canMove = true;
     protected bool combatPhase = false;
     public bool isTurn = false;
     // Use this for initialization

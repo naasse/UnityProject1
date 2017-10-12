@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Equipable : ItemTag {
-    // Use this for initialization
-    public enum EquipType { none,Weapon, Helm, ChestPiece, Legpiece, Glove, Boots, Active };
+public class Equipment : ItemScript{
+    public enum EquipType { none, Weapon, Helm, ChestPiece, Legpiece, Glove, Boots, Active };
     public EquipType type;
+    // Use this for initialization
     void Start () {
+		
 	}
 	
 	// Update is called once per frame
