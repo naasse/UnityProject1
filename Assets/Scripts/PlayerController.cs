@@ -21,6 +21,9 @@ public class PlayerController : UnitController
     private UnitInventory inventory;
     public bool inventoryOpen=false;
 
+    public int attacksPerTurn = 1;
+    public int attacksLeft = 0;
+
     private void Start()
     {
         base.Start();
@@ -79,15 +82,21 @@ public class PlayerController : UnitController
         {
 
             //If hovering on enemy, click to attack
-            if (isTurn)
-            {
                 //TODO - better way to set player active state on turn than HP > 0 probably. No game over screen yet when programming this, soooo.
                 if (hit.collider.gameObject.tag == "Enemy" && Input.GetMouseButtonDown(0) && GetCurrentHP() > 0)
+                {
+                    if (!unit.inCombat)
+                    {
+                        gameController.startCombat();
+                    }
+                if (attacksLeft > 0)
                 {
                     EnemyController enemy = hit.collider.gameObject.GetComponent<EnemyController>();
                     enemy.TakeDamage((int)unit.damage);
                     gameController.UpdateEventLog("Player dealt " + unit.damage + " damage to " + enemy.name);
                     gameController.SetPlayerTurn(false);
+                    attacksLeft--;
+                }
                 }
                 else if (hit.collider.gameObject.tag == "Player" && Input.GetMouseButtonDown(0) && GetCurrentHP() > 0)
                 {
@@ -96,7 +105,7 @@ public class PlayerController : UnitController
                     Heal(healStrength);
                 }
             }
-        }
+        
     }
     public void TakeDamage(int damageAmount)
     {
@@ -157,12 +166,12 @@ public class PlayerController : UnitController
     {
         if (canMove)
         {
-            if (currentMovement > 0 || !combatPhase) {
+            if (currentMovement > 0 || !unit.inCombat) {
                 //Update movement to correct direction
                 Vector3 movement = Quaternion.Euler(0, 45, 0) * new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
                 movement = movement * Time.deltaTime * unit.movespeed;
                 float movelength = movement.magnitude;
-                if (combatPhase)
+                if (unit.inCombat)
                 {
                     float newMovelength = Mathf.Clamp(movelength, 0, currentMovement);
                     //check if need to limmit movement
@@ -178,7 +187,7 @@ public class PlayerController : UnitController
                     {
                         rb.MovePosition(rb.transform.position + movement);
                         currentMovement -= movement.magnitude;
-                        if (combatPhase) updateMovementRadius();
+                        if (unit.inCombat) updateMovementRadius();
                     }
                 }
                 
@@ -195,11 +204,14 @@ public class PlayerController : UnitController
     }
     public void startTurn()
     {
+        attacksLeft = attacksPerTurn;
+        isTurn = true;
         regenMovement();
         setCanMove(true);
     }
     public void endTurn()
     {
+        isTurn = false;
         setCanMove(false);
     }
 
@@ -238,10 +250,15 @@ public class PlayerController : UnitController
             inventory.ChangeInventoryState();
         }
     }
+
     public void setCombat(bool combat)
     {
-        combatPhase = combat;
-        isTurn = false;
-        canMove = true;
+        unit.inCombat = combat;
+        isTurn =!combat;
+        this.canMove = !combat;
+        if (!combat)
+        {
+            currentMovement = 0;
+        }
     }
     }

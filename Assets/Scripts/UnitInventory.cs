@@ -61,9 +61,9 @@ public class UnitInventory : MonoBehaviour {
     public void pickup(ItemScript item)
     {
         itemList.Add(item);
+        inventory.transform.Find("Inventory").GetComponent<InventoryGuiScript>().pickup(item);
         item.gameObject.SetActive(false);
         hasChanged = true;
-        inventory.transform.Find("Inventory").GetComponent<InventoryGuiScript>().pickup(item);
         print("added " + item.name + " to inventory");
 
     }

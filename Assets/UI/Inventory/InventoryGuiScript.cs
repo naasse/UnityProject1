@@ -42,7 +42,7 @@ public class InventoryGuiScript : MonoBehaviour {
     {
         bool set = false;
         print(gameObject.transform.root.Find("Inventory/ItemList/Scroll View/Viewport/Content").transform.childCount);
-        for (int k = 0; k < gameObject.transform.root.Find("Inventory/ItemList/Scroll View/Viewport/Content").transform.childCount; k++)
+        for (int k = 1; k < gameObject.transform.root.Find("Inventory/ItemList/Scroll View/Viewport/Content").transform.childCount; k++)
         {
             ItemSlotScript script = gameObject.transform.root.Find("Inventory/ItemList/Scroll View/Viewport/Content").transform.GetChild(k).GetComponent<ItemSlotScript>();
             if (script.item == null)

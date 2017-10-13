@@ -27,7 +27,7 @@ public class EnemyController : UnitController {
         if (currentHP <= 0)
         {
             gameObject.SetActive(false);
-            gameController.GetRemainingEnemies();
+            //gameController.GetRemainingEnemies();
         }
     }
 

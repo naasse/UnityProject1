@@ -11,24 +11,34 @@ public class GameController : MonoBehaviour
     public Text eventText;
     public Text enemyCountText;
 
+    private int enemiesLeft=-1;
+
     private bool playerTurn;
     private float timeWait = 1.0f;
     private int roundNumber;
     private GameObject[] enemyList;
+
+    public bool combatStarted = false;
     private List<string> eventLog = new List<string>();
 
     PlayerController player;
 
     private void Start()
     {
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
+    }
+
+    public void startCombat()
+    {
+        combatStarted = true;
         roundNumber = 0;
         UpdateEventLog("Combat starting!");
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         enemyList = GameObject.FindGameObjectsWithTag("Enemy");
         SetPlayerTurn(true);
-        GetRemainingEnemies();        
+        player.setCombat(true);
+        GetRemainingEnemies();
     }
-
     public bool IsPlayerTurn()
     {
         return playerTurn;
@@ -41,13 +51,11 @@ public class GameController : MonoBehaviour
             turnText.text = "Players Turn";
             roundNumber++;
             UpdateEventLog("Round: " + roundNumber);
-            player.GetComponent<Rigidbody>().isKinematic = false;
             player.startTurn();
         }
         else
         {
             player.endTurn();
-            player.GetComponent<Rigidbody>().isKinematic = true;
             turnText.text = "Enemies Turn";
 
         }
@@ -73,17 +81,7 @@ public class GameController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (timeWait <= 0)
-            timeWait = 1.0f;
-        if (!playerTurn)
-        {
-            timeWait -= Time.deltaTime;
-            if (timeWait < 0)
-            {
-                DoEnemyTurn();
-            }
-        }
-        //MouseListener
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -94,7 +92,7 @@ public class GameController : MonoBehaviour
             {
                 //Show healthbar
                 enemyHealth.gameObject.SetActive(true);
-                EnemyController enemy = hit.collider.gameObject.GetComponent<EnemyController>();                
+                EnemyController enemy = hit.collider.gameObject.GetComponent<EnemyController>();
 
                 //Click to Attack
                 //TODO - some kind of active player component, as could be more than one player unit, also the flexibility of using same script to attack player from enemy
@@ -120,6 +118,20 @@ public class GameController : MonoBehaviour
                 enemyHealth.gameObject.SetActive(false);
             }
         }
+        if (combatStarted) { 
+        if (timeWait <= 0)
+            timeWait = 1.0f;
+        if (!playerTurn)
+        {
+
+            timeWait -= Time.deltaTime;
+            if (timeWait < 0 && enemiesLeft>0)
+            {
+                DoEnemyTurn();
+            }
+        }
+        else GetRemainingEnemies();
+    }
     }
 
     //TODO - scrollable, or only display subset
@@ -148,10 +160,13 @@ public class GameController : MonoBehaviour
     {
         //TODO - don't refetch, pop them from list when they die and rely on gamecontroller Start() original list
         enemyList = GameObject.FindGameObjectsWithTag("Enemy");
-        enemyCountText.text = "Enemies Remaining: " + enemyList.Length;
-        if (enemyList.Length <= 0)
+        enemiesLeft = enemyList.Length;
+        enemyCountText.text = "Enemies Remaining: " + enemiesLeft;
+        if (enemiesLeft <= 0)
         {
             UpdateEventLog("You won!");
+            player.setCombat(false);
+            combatStarted=false;
         }
     }
 }
