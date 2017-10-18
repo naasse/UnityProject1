@@ -22,9 +22,7 @@ GameObject:
   - component: {fileID: 23675055796102508}
   - component: {fileID: 64544877579652468}
   - component: {fileID: 33212824946615086}
-  - component: {fileID: 114628893309751126}
-  - component: {fileID: 114800017320600710}
-  - component: {fileID: 114225269532185352}
+  - component: {fileID: 114567956579122152}
   m_Layer: 0
   m_Name: Gloves
   m_TagString: Item
@@ -98,7 +96,7 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114225269532185352
+--- !u!114 &114567956579122152
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,41 +104,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1704607405634660}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c73440d72b0fd649980dece000ba01b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 1
-  requireTags: []
-  type: 5
---- !u!114 &114628893309751126
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1704607405634660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f363f325fd15ad458d04f3f1841f918, type: 3}
+  m_Script: {fileID: 11500000, guid: ee107816cd154b448ad03ad7bc1bf7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   name: Gloves
-  EquiptType: 6
   pickupable: 1
   isPickedUp: 0
-  health: 10
+  health: 0
   sprite: {fileID: 21300000, guid: e4cfa9c5e3d396d448d196e11191fc8c, type: 3}
---- !u!114 &114800017320600710
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1704607405634660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5df62b42b8280c49882898004b4f50a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 2
-  requireTags: []
-  wearType: 0
-  physicalDef: 1
+  type: 5
+  defense: 1

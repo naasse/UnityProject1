@@ -22,9 +22,7 @@ GameObject:
   - component: {fileID: 23575829366438172}
   - component: {fileID: 64130713399808104}
   - component: {fileID: 33934749540413840}
-  - component: {fileID: 114074222064596084}
-  - component: {fileID: 114188783381893020}
-  - component: {fileID: 114281234344808894}
+  - component: {fileID: 114532245092939572}
   m_Layer: 0
   m_Name: ChestPiece
   m_TagString: Item
@@ -98,7 +96,7 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114074222064596084
+--- !u!114 &114532245092939572
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,41 +104,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1129491040866994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f363f325fd15ad458d04f3f1841f918, type: 3}
+  m_Script: {fileID: 11500000, guid: ee107816cd154b448ad03ad7bc1bf7b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: ChestPiece
-  EquiptType: 4
+  name: Chest Piece
   pickupable: 1
   isPickedUp: 0
-  health: 10
+  health: 0
   sprite: {fileID: 21300000, guid: b8b9105364086e14f844de5bd0773421, type: 3}
---- !u!114 &114188783381893020
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1129491040866994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5df62b42b8280c49882898004b4f50a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 2
-  requireTags: []
-  wearType: 0
-  physicalDef: 1
---- !u!114 &114281234344808894
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1129491040866994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c73440d72b0fd649980dece000ba01b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 1
-  requireTags: []
   type: 3
+  defense: 1

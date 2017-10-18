@@ -22,9 +22,7 @@ GameObject:
   - component: {fileID: 23524755843614878}
   - component: {fileID: 64067079231209184}
   - component: {fileID: 33482540895264278}
-  - component: {fileID: 114282824470784184}
-  - component: {fileID: 114484115733750360}
-  - component: {fileID: 114174949074048662}
+  - component: {fileID: 114861528069059256}
   m_Layer: 0
   m_Name: OneHanded
   m_TagString: Item
@@ -98,7 +96,7 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114174949074048662
+--- !u!114 &114861528069059256
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,41 +104,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1680122351061708}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c73440d72b0fd649980dece000ba01b, type: 3}
+  m_Script: {fileID: 11500000, guid: defe283de5f4ead488c762c0206f6692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagType: 1
-  requireTags: []
-  type: 1
---- !u!114 &114282824470784184
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1680122351061708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f363f325fd15ad458d04f3f1841f918, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: OneHanded
-  EquiptType: 1
+  name: One Handed
   pickupable: 1
   isPickedUp: 0
-  health: 10
+  health: 0
   sprite: {fileID: 21300000, guid: dc1cadf8d86f28148912b9fde181ef68, type: 3}
---- !u!114 &114484115733750360
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1680122351061708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb3287e52dff5e94db70a85e8b593e07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 0
-  requireTags: []
-  Damage: 1
+  type: 1
+  isRanged: 0
+  range: 0
+  damage: 5
   requiredHands: 1
+  hasAmmo: 0
+  maxAmmo: 0
+  curAmmo: 0

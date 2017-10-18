@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weaponizable : ItemTag
-{
-    public int Damage = 5;
-    public int requiredHands = 1;
+public class Active : Equipment {
+
 	// Use this for initialization
 	void Start () {
 		

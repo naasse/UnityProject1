@@ -11,7 +11,7 @@ public class InventoryGuiScript : MonoBehaviour {
 
     [SerializeField]
     public GameObject ItemContent;
-    private int maxItemSlotsPerRow = 5;
+    private int extraItems = 5;
 
     private List<GameObject> slots = new List<GameObject>();
     private Dictionary<string, GameObject> equipSlots = new Dictionary<string, GameObject>();
@@ -35,12 +35,25 @@ public class InventoryGuiScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-       // UpdateInventory();
+       //UpdateInventory();
 	}
 
     public void pickup(ItemScript newItem)
     {
-        AddItemSlot(newItem);
+        bool set = false;
+        print(gameObject.transform.root.Find("Inventory/ItemList/Scroll View/Viewport/Content").transform.childCount);
+        for (int k = 1; k < gameObject.transform.root.Find("Inventory/ItemList/Scroll View/Viewport/Content").transform.childCount; k++)
+        {
+            ItemSlotScript script = gameObject.transform.root.Find("Inventory/ItemList/Scroll View/Viewport/Content").transform.GetChild(k).GetComponent<ItemSlotScript>();
+            if (script.item == null)
+            {
+                print("found a slot");
+                script.setItem(newItem);
+                set = true;
+                break;
+            }
+        }
+        if(!set)AddItemSlot(newItem);
     }
 
     public ItemScript drop(ItemScript removeItem)
@@ -56,26 +69,26 @@ public class InventoryGuiScript : MonoBehaviour {
     }
     public void UpdateInventory()
     {
-        int slotscounter = 0;
-        clearInventory();
+        int slotscounter =playerInv.itemList.Count;
         bool twoHander = false;
-        foreach (ItemScript item in playerInv.itemList)
+        for(int k =0;k< gameObject.transform.root.Find("Inventory/ItemList/Scroll View/Viewport/Content").transform.childCount; k++)
         {
-           // print(item.name + " added to gui");   
-            AddItemSlot(item);
-            slotscounter++;
+            gameObject.transform.root.Find("Inventory/ItemList/Scroll View/Viewport/Content").transform.GetChild(k).GetComponent<ItemSlotScript>().UpdateImage();
         }
-        for(int i = 0; i < maxItemSlotsPerRow-(slotscounter % maxItemSlotsPerRow); i++){
+        for (int i = gameObject.transform.root.Find("Inventory/ItemList/Scroll View/Viewport/Content").transform.childCount-1; i < slotscounter+extraItems; i++){
             AddItemSlot(null);
-        }transform.Find("HelmSlot").GetComponent<ItemSlotScript>().forceset(playerInv.Helm);
-         transform.Find("Weapon1Slot").GetComponent<ItemSlotScript>().forceset(playerInv.Weapon1);
-         transform.Find("Weapon2Slot").GetComponent<ItemSlotScript>().forceset(playerInv.Weapon2);
-         transform.Find("ChestPieceSlot").GetComponent<ItemSlotScript>().forceset(playerInv.Chestpiece);
-         transform.Find("GloveSlot").GetComponent<ItemSlotScript>().forceset(playerInv.Gloves);
-         transform.Find("LegPieceSlot").GetComponent<ItemSlotScript>().forceset(playerInv.LegPiece);
-        transform.Find("BootsSlot").GetComponent<ItemSlotScript>().forceset(playerInv.Boots);
-        transform.Find("ActiveSlot").GetComponent<ItemSlotScript>().forceset(playerInv.Active);
+        }
+        transform.Find("HelmSlot").GetComponent<ItemSlotScript>().UpdateImage();
+        transform.Find("Weapon1Slot").GetComponent<ItemSlotScript>().UpdateImage();
+        transform.Find("Weapon2Slot").GetComponent<ItemSlotScript>().UpdateImage();
+        transform.Find("ChestPieceSlot").GetComponent<ItemSlotScript>().UpdateImage();
+        transform.Find("GloveSlot").GetComponent<ItemSlotScript>().UpdateImage();
+        transform.Find("LegPieceSlot").GetComponent<ItemSlotScript>().UpdateImage();
+        transform.Find("BootsSlot").GetComponent<ItemSlotScript>().UpdateImage();
+        transform.Find("ActiveSlot").GetComponent<ItemSlotScript>().UpdateImage();
 
+        transform.parent.Find("ArmorText").GetComponent<Text>().text = "Armor=" + playerInv.unit.armor;
+        transform.parent.Find("DamageText").GetComponent<Text>().text = "Damage=" + playerInv.unit.damage;
         playerInv.hasChanged = false;
     }
     public void closeInventory()
@@ -83,21 +96,9 @@ public class InventoryGuiScript : MonoBehaviour {
         
 
     }
-    public void clearInventory()
-    {
-        //print("destroyingslots");
-
-        foreach (GameObject slot in slots)
-        {
-           // print("destroyingslots");
-            Destroy(slot);
-        }
-        slots.Clear();
-        slots = new List<GameObject>();
-    }
     private void findEquipSlots()
     {
-        for(int i =0; i< gameObject.transform.childCount; i++){
+        for(int i =1; i< gameObject.transform.childCount; i++){
             if (gameObject.transform.GetChild(i).tag.Equals("Slot"))
             {
                 equipSlots.Add(gameObject.transform.GetChild(i).name, gameObject.transform.GetChild(i).gameObject);

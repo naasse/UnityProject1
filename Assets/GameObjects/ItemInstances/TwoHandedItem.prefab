@@ -22,9 +22,7 @@ GameObject:
   - component: {fileID: 23999337672737922}
   - component: {fileID: 64385527207211562}
   - component: {fileID: 33982329023536638}
-  - component: {fileID: 114812164173477740}
-  - component: {fileID: 114142557674161894}
-  - component: {fileID: 114983551500272000}
+  - component: {fileID: 114428984256311558}
   m_Layer: 0
   m_Name: TwoHandedItem
   m_TagString: Item
@@ -98,7 +96,7 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114142557674161894
+--- !u!114 &114428984256311558
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,41 +104,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1140407721214120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb3287e52dff5e94db70a85e8b593e07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 0
-  requireTags: []
-  Damage: 5
-  requiredHands: 2
---- !u!114 &114812164173477740
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140407721214120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f363f325fd15ad458d04f3f1841f918, type: 3}
+  m_Script: {fileID: 11500000, guid: defe283de5f4ead488c762c0206f6692, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   name: TwoHanded
-  EquiptType: 2
   pickupable: 1
   isPickedUp: 0
-  health: 10
+  health: 0
   sprite: {fileID: 21300000, guid: 658ff608ea77d4d44aef77c668c4a0b2, type: 3}
---- !u!114 &114983551500272000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140407721214120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c73440d72b0fd649980dece000ba01b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tagType: 1
-  requireTags: []
   type: 1
+  isRanged: 0
+  range: 0
+  damage: 5
+  requiredHands: 2
+  hasAmmo: 0
+  maxAmmo: 0
+  curAmmo: 0
